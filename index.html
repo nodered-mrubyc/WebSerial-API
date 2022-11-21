@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta http-equiv="content-type" charset="UTF-8">
+    <title>データフロープログラミング for mruby/c</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!--     -->
+</head>
+<body>
+    <!-- <header>
+        <a href="#rboard">RBoardに転送</a><br>
+        <a href="#ruby">Rubyコードの書き込み</a><br><br><br>
+    </header> -->
+
+    <h1 id="rboard">RBoardに転送</h1>
+    <!--   web serial api   -->
+    <!-- <h1>Web Serial API Console</h1> -->
+    <button onclick="onConnectButtonClick()">Connect</button><br>
+    <button id="write01">書き込み</button><br>
+    <button onclick="onVersionButtonClick()">Version</button><br>
+    <button onclick="onClearButtonClick()">Clear</button><br>
+    <!-- <form method="post" action="" enctype="multipart/form-data">
+        <input type="file" id="sendInput" onload="fileLoad">
+    </form> -->
+    <input type="file" id="sendInput"><br>
+    <button onclick="onReadyButtonClick()">Ready</button><br>
+    <button onclick="onWriteButtonClick()">Write</button><br>
+    <button onclick="onExecuteButtonClick()">Execute</button><br>
+    
+    <br>
+    <textarea cols="80" rows="20" id="outputArea" readonly></textarea>
+    <br><br><br>
+
+    <!--   ruby code editor   -->
+    <h1 id="ruby">Rubyコードの書き込み</h1>
+    <h3>Rubyコードを書き込んでください。</h3>
+    <textarea id="input_code" name="input_code" rows="20" cols="60">ここにRubyコードを書き込む</textarea><br>
+    <button onclick="save();">保存</button>
+
+    <script type="text/javascript" src="js/script.js"></script>
+</body>

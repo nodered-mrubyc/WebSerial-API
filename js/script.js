@@ -7,7 +7,7 @@ const sleep = waitTime => new Promise( resolve => setTimeout(resolve, waitTime) 
 const disConnect = document.getElementById('disConnectButton');
 
 // onConect-関数化- //
-let reader, writer, port;
+let reader, port, checkStr = "", str = "";
 async function onConnectButtonClick() {
     // シリアルポートへ接続
     try {
@@ -22,7 +22,6 @@ async function onConnectButtonClick() {
         console.log("Connected serial port.");
         while (port.readable) {
             reader = port.readable.getReader();
-            writer = port.writable.getWriter();
             await serialPortReceive();    // シリアルポートからの返答を受け取る
         }
     } catch (error) {
@@ -33,33 +32,24 @@ async function onConnectButtonClick() {
 }
 // シリアルポートからの返答を受け取る
 async function serialPortReceive() {
-    let str = "", flag = 0;
     try {
-        while (true) {
+        let isWHile = true;
+        while (isWHile) {
             const { value, done } = await reader.read();    // シリアルポートからデータを受信する
             if (done) {
                 addSerial("Canceled\n");
                 console.log("Canceled");
-                break;
+                isWHile = !isWHile;
             }
+            // if(str != "" && str.includes(checkStr)) {
+            //     isWHile = !isWHile;
+            // }
             const inputValue = new TextDecoder().decode(value);
             addSerial(inputValue);                  // シリアルポートから受信したデータをテキストエリアに表示する
             console.log("receive:" + inputValue);   // シリアルポートから受信したデータをコンソールに表示する
-            str += inputValue;
-
-            // シリアルポートからの返答に対応したフラグを立てる
-            // console.log(flag);
-            // if(String(str).includes("mruby/c")) {
-            //     flag = 1;
-            // } else if (String(str).includes("/04)")) {
-            //     flag = 2;
-            // } else if (String(str).includes("bytecode")) {
-            //     flag = 3;
-            // } else if (String(str).includes("+DONE")) {
-            //     flag = 4;
-            // } else if (String(str).includes("mruby/c")) {
-            //     flag = 5;
-            // }
+            // str += inputValue;
+            // console.log(checkStr);
+            // console.log(str);
         }
     } catch (error) {
         addSerial("Error: Read" + error + "\n");
@@ -67,11 +57,12 @@ async function serialPortReceive() {
         console.log(error);
     } finally {
         reader.releaseLock();
-        return {
-            str,
-            flag,
-        };
+        await port.close();
+        reader = null;
     }
+    return {
+        str,
+    };
 }
 
 
@@ -80,15 +71,7 @@ async function disConnectButtonClick() {
     try {
         if (port.readable) {
             await reader.cancel();
-            await reader.releaseLock();
-            console.log("2");
-            // await writer.releaseLock();
-            await port.close();
-            console.log("3");
-            port = null;
             reader = null;
-            writer = null;
-            console.log("4");
             return;
         } else {
             return;
@@ -121,64 +104,11 @@ if (fileInput) {
 }
 
 // writeボタン //
+let writer;
 async function writeButtonClick() {
+    writer = port.writable.getWriter();
     let obj, result = obj || {};
     let ary = new Uint8Array(fileReader.result);    // ArrayBuffer形式で読み込んだファイルをUint8Arrayに変換
-    
-    // await serialPortWriter("\r\n", "mruby/c", 1);
-    // console.log("send:\r\n");
-    // await serialPortWriter("version\r\n", "/04)", 2);
-    // console.log("view mruby/c version");
-    // await serialPortWriter("write " + file_size + "\r\n", "bytecode", 3);
-    // console.log("write ready " + file_size);
-    // await writer.write(ary);
-    // await serialPortWriter("\r\n", "+DONE", 4);
-    // console.log("finish write");
-    // await serialPortWriter("execute\r\n", "mruby/c", 5);
-    // console.log("execute .mrb file");
-
-    // フラグによって送るコマンドを指定する
-    // try {
-    //     while (true) {
-    //         console.log((await serialPortReceive()).flag);
-    
-    //         switch ((await serialPortReceive()).flag) {
-    //             case 0:
-    //                 await writer.write(encoder.encode("\r\n"));
-    //                 console.log("send:\r\n");
-    //                 flag++;
-    //                 break;
-    //             case 1:
-    //                 await writer.write(encoder.encode("version\r\n"));
-    //                 console.log("view mruby/c version");
-    //                 flag++;
-    //                 break;
-    //             case 2:
-    //                 await writer.write(encoder.encode("write " + file_size + "\r\n"));
-    //                 console.log("write ready " + file_size);
-    //                 flag++;
-    //                 break;
-    //             case 3:
-    //                 await writer.write(ary); // RBoardに書き込み
-    //                 await writer.write(encoder.encode("\r\n"));
-    //                 console.log("finish write");
-    //                 flag++;
-    //                 break;
-    //             case 4:
-    //                 await writer.write(encoder.encode("execute\r\n"));
-    //                 console.log("execute .mrb file");
-    //                 flag++;
-    //                 break;
-    //             case 5:
-    //                 flag = 0
-    //                 break;
-    //         }
-    //     }
-    // } catch (error) {
-    //     console.log("Writer error.");
-    //     console.log(error);
-    // }
-    // console.log((await serialPortReceive()).flag);
 
     // シリアルポートに\r\nを送信する
     await writer.write(encoder.encode("\r\n"));
@@ -201,16 +131,32 @@ async function writeButtonClick() {
     await writer.write(encoder.encode("execute\r\n"));
     console.log("execute .mrb file");
     await sleep(500);
+    
+    // await serialPortWriter("\r\n", "mruby/c");
+    // console.log("send:\r\n");
+    // await serialPortWriter("version\r\n", "/04)");
+    // console.log("view mruby/c version");
+    // await serialPortWriter("write " + file_size + "\r\n", "bytecode");
+    // console.log("write ready " + file_size);
+    // await writer.write(ary);
+    // await serialPortWriter("\r\n", "+DONE");
+    // console.log("finish write");
+    // await serialPortWriter("execute\r\n", "mruby/c");
+    // console.log("execute .mrb file");
+
+    writer.releaseLock();
 }
 
 // シリアルポートへの書き込みを行う関数
-// function serialPortWriter (command, checkStr) {
+// function serialPortWriter (command, check) {
 //     return new Promise (async (resolve, reject) => {
 //         await writer.write(encoder.encode(command));
-//         while (!String(serialPortReceive().str).includes(checkStr)) {
-//             console.log(serialPortReceive().str);
-//             // resolve();
+//         checkStr = check;
+//         console.log(checkStr);
+//         while (!str.includes(checkStr)) {
+//             console.log(str);
 //         }
+//         checkStr = "";
 //         resolve();
 //     })
 // }

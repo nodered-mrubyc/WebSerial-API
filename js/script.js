@@ -132,6 +132,7 @@ async function writeButtonClick() {
     console.log("execute .mrb file");
     await sleep(500);
     
+    // serialPortWriter関数を利用
     // await serialPortWriter("\r\n", "mruby/c");
     // console.log("send:\r\n");
     // await serialPortWriter("version\r\n", "/04)");

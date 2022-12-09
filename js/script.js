@@ -41,6 +41,7 @@ async function serialPortReceive() {
                 console.log("Canceled");
                 isWHile = !isWHile;
             }
+            // strとcheckStrが一致していれば、whileを抜ける
             // if(str != "" && str.includes(checkStr)) {
             //     isWHile = !isWHile;
             // }

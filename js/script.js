@@ -7,6 +7,13 @@ const sleep = waitTime => new Promise( resolve => setTimeout(resolve, waitTime) 
 const disConnect = document.getElementById('disConnectButton');
 
 // onConect-関数化- //
+$(function(){
+    // 添付ファイルチェンジイベント
+    $('.fileinput').on('change', function(){
+      let file = $(this).prop('files')[0];
+      $('.filelabel').text(file.name);
+    });
+  });
 let reader, port, checkStr = "", str = "";
 async function onConnectButtonClick() {
     // シリアルポートへ接続
@@ -86,7 +93,8 @@ async function disConnectButtonClick() {
 
 // ファイルを選択ボタン //
 // ファイルのアップロード
-const fileInput = document.getElementById("sendInput");
+// const fileInput = document.getElementById("sendInput");
+const fileInput = document.getElementById("file");
 let fileReader = new FileReader();   //FileReaderのインスタンスを作成する
 let ary, file, file_size = 0;
 if (fileInput) {

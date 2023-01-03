@@ -2,30 +2,37 @@
 <html lang="ja">
 <head>
     <meta http-equiv="content-type" charset="UTF-8">
+    <script type="text/javascript" src="js/jQuery-3.2.0.min.js"></script>
     <title>データフロープログラミング for mruby/c</title>
     <link rel="stylesheet" href="css/style.css">
-    <!--     -->
 </head>
 <body>
     <h1 id="rboard">RBoardに転送</h1>
     <!--   web serial api   -->
-    <button onclick="onConnectButtonClick()">onConnect</button><br>
-    <button onclick="disConnectButtonClick()" id="disConnectButton">disConnect</button><br>
-    <!-- <form method="post" action="" enctype="multipart/form-data">
-        <input type="file" id="sendInput" onload="fileLoad">
-    </form> -->
-    <input type="file" id="sendInput"><br>
-    <button onclick="writeButtonClick()">write</button><br>
+    <div class="buttons">
+        <button onclick="onConnectButtonClick()" id="onConnectButton" class="button connectButton">onConnect</button>
+        <button onclick="disConnectButtonClick()" id="disConnectButton" class="button connectButton">disConnect</button>
+    </div>
+    <div class="buttons">
+        <form action="index.html" method="POST" entype="multpart/form-data">
+            <label for="file" class="filelabel button">ファイルを添付</label>
+            <input type="file" name="fileinput" id="file" class="fileinput">
+        </form>
+    </div>
+    <div class="buttons">
+        <button onclick="writeButtonClick()" class="button writeButton">write</button>
+    </div>
     
     <br>
-    <textarea cols="80" rows="20" id="outputArea" readonly></textarea>
+    <textarea cols="80" rows="20" id="outputArea" placeholder="readonly"></textarea>
     <br><br><br>
 
     <!--   ruby code editor   -->
     <h1 id="ruby">Rubyコードの書き込み</h1>
     <h3>Rubyコードを書き込んでください。</h3>
-    <textarea id="input_code" name="input_code" rows="20" cols="60">ここにRubyコードを書き込む</textarea><br>
+    <textarea id="input_code" name="input_code" rows="20" cols="60" placeholder="ここにRubyコードを書き込む"></textarea><br>
     <button onclick="save();">保存</button>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="js/script.js"></script>
 </body>

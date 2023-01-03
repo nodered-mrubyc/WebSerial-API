@@ -1,74 +1,78 @@
-#inputFile {
-    position: relative;
-    padding: 180px 0 100px;
+#rboard {
+    text-align: center;
+    top: 20px;
+    letter-spacing: 0.25em;
+}
+
+.buttons {
+    padding: auto;
+    margin: 20px;
     text-align: center;
 }
 
-#dropArea {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 80%;
-    padding: 100px 0 0;
-    border: 2px dashed #494949;
-    background: rgba(22, 165, 191, 0);
-    transition: all 0.25s cubic-bezier(0.21, 0.51, 0.51, 1);
-}
-
-#dropArea.dragover {
-    border: 2px solid #16a5bf;
-    background: rgba(22, 165, 191, 0.6);
-}
-
-#uploadFile {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    display: block;
-    width: 300px;
-    height: 80px;
-    opacity: 0;
-}
-
-#inputFileWrap {
-    position: relative;
+.connectButton {
     display: inline-block;
+    margin: 0 20px;
 }
 
-#btnInputFile,
-#btnChangeFile {
-    display: table;
-    width: 300px;
-}
-
-#btnChangeFile {
-    display: none;
-}
-
-#btnInputFile span,
-#btnChangeFile span {
-    position: relative;
-    z-index: 2;
-    display: table-cell;
-    width: 300px;
-    height: 80px;
-    border: 1px solid #333;
-    border-radius: 4px;
-    background: #333;
-    text-decoration: none;
-    color: #fff;
-    font-size: 26px;
-    line-height: 1;
+/* button */
+.button {
+    min-width: 150px;
+    font-family: inherit;
+    appearance: none;
+    border: 0;
+    border-radius: 5px;
+    padding: 10px 20px;
+	background: #5bc7d2;
+	color: #fff;
+	border-radius: 100vh;
     font-weight: bold;
-    vertical-align: middle;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+	transition: 0.5s;
+    cursor: pointer;
+}
+.button:hover {
+	background: #fff;
+	color: #2F676E;
+    outline: 2px;
+    box-shadow: 0 0 0 2px #2F676E;
+}
+.button:focus {
+	background: #5bc7d2;
+	color: #fff;
+    box-shadow: 0 0 0 2px #2F676E;
 }
 
-#upFileWrap.selected #btnInputFile {
+#outputarea #input_code {
+    position: absolute;
+    margin: auto;
+    width: 80%;
+    /* height: 80%; */
+    /* padding: 100px 0 0; */
+    /* border: 2px dashed #494949; */
+    background: rgba(22, 165, 191, 0);
+}
+
+/* inputFile */
+.filelabel{
+    display: inline-block;
+    position: relative;
+    background-color: #5bc7d2;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 100vh;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+.filelabel:hover{
+    background: #fff;
+	color: #5bc7d2;
+    outline: 2px;
+    box-shadow: 0 0 0 2px #cbd6ee;
+}
+
+.fileinput{
     display: none;
-}
-
-#upFileWrap.selected #btnChangeFile {
-    display: table;
 }
